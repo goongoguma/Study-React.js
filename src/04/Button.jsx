@@ -20,4 +20,4 @@ Button.defaultProps = {
   onPress: () => { }
 };
 
-export defualt Button;
+export default Button;

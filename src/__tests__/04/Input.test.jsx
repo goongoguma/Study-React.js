@@ -25,4 +25,24 @@ describe('<Input>', () => {
     expect(value).toBe(expectedValue);
     expect(type).toBe('text');
   });
+
+  it('renders errorMessage', () => {
+    const wrapper = shallow(<Input name='test_name' />);
+    expect(wrapper.find('.error')).toHaveLength(0);
+    const expectedErrorMessage = '옳지 못한 값이 입력되었습니다';
+    wrapper.setProps({ errorMessage: expectedErrorMessage });
+    expect(wrapper.find('span').prop('className')).toBe('error');
+    expect(wrapper.find('.error')).toHaveLength(1);
+    expect(wrapper.html()).toContain(expectedErrorMessage);
+  });
+
+  it('calls back onChange on input change', () => {
+    const changeStub = jest.fn();
+    const wrapper = shallow(<Input name='test_name' onChange={changeStub} />);
+    expect(changeStub).not.toHaveBeenCalled();
+    const expectedTargetValue = 'updated input';
+    wrapper.find('input').simulate('change', { target: { value: expectedTargetValue } });
+    expect(changeStub).toHaveBeenCalledTimes(1);
+    expect(changeStub).toHaveBeenCalledWith('test_name', expectedTargetValue);
+  });
 });
